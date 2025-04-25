@@ -1,10 +1,11 @@
 import express from "express";
 import User from "../models/User.js";
+import { verifyToken } from "../utils/jwtMiddleware.js";
 
 const router = express.Router();
 
 
-router.get('/getAllUsers', async(req, res) => {
+router.get('/getAllUsers', verifyToken, async(req, res) => {
 
     try {
         const users = await User.find({}, '-password');

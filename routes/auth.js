@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import { validationResult } from "express-validator";
 import signupValidator from "../validator/authValidator.js";
 import bcrypt from 'bcrypt'
+import { generateToken } from "../utils/jwt.js";
 
 const router = express.Router();
 
@@ -36,17 +37,21 @@ router.post("/signup", signupValidator, async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword, username });
     console.log(hashedPassword)
     await newUser.save();
+
+    const token = generateToken(user._id);
+
     res.status(201).json({
         statusCode: 200,
         message: "User registered successfully",
         user: newUser,
-        token: "DummyToken"
+        token: token
       });
   } catch (err) {
     res.status(500).send(`Error registering user ${err}`);
   }
 });
 
+//login logic 
 router.post("/login", async (req, res) => {
   const { username, email, password } = req.body;
 
@@ -65,12 +70,13 @@ router.post("/login", async (req, res) => {
         .status(400)
         .json({ statusCode: 400, message: "Invalid password" });
     }
+    const token = generateToken(user._id);
 
     res.status(200).json({
       statusCode: 200,
       message: "User logged in successfully",
       user: user,
-      token: "DummyToken"
+      token: token
     });
   } catch (err) {
     res.status(500).json({
