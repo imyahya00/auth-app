@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 dotenv.config();
 
-console.log('JWT_SECRET:', process.env.JWT_SECRET);
-console.log('Environment variables loaded:', {
+console.log('Environment variables loaded Server.JS:', {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     MONGO_URI: process.env.MONGO_URI,
-    JWT_SECRET: process.env.JWT_SECRET
+    JWT_SECRET: process.env.JWT_SECRET,
+    AI_KEY: process.env.GEMINI_API_KEY
 });
 
 import app from './index.js'
