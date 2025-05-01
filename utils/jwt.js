@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
+import config from '../config/environment.js';
 
-//const SECRET = process.env.JWT_SECRET; // In production, use process.env.JWT_SECRET
+const SECRET = config.secretKeys.jwtSecret;
 
 export const generateToken = (userId) => {
   const secret = process.env.JWT_SECRET;

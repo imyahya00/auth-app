@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import express from 'express';
+import config from '../config/environment.js';
 
 const router = express.Router()
 
@@ -9,8 +10,9 @@ const router = express.Router()
 //   });
   
 const ai = new GoogleGenAI({
-    apiKey: "AIzaSyCfVHW-OttAFm78u9HG3q7cXYW3NxSI3cU",
-});  
+    apiKey: config.secretKeys.geminiAPIKey,
+});
+console.log('value--------------', config.secretKeys.geminiAPIKey);
 
 // Create a text generation endpoint
 router.post('/generate', async (req, res) => {
