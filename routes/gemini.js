@@ -1,51 +1,14 @@
-import { GoogleGenAI } from "@google/genai";
-import express from 'express';
-import config from '../config/environment.js';
+import express from "express";
+import { addMemory } from '../controller/memoryController.js';
+import { getAllEvents } from "../controller/memoryController.js";
+import { verifyToken } from "../utils/jwtMiddleware.js";
 
-const router = express.Router()
+const router = express.Router();
 
-// Initialize Gemini
-// const ai = new GoogleGenAI({
-//     apiKey: process.env.GEMINI_API_KEY,
-//   });
-  
-const ai = new GoogleGenAI({
-    apiKey: config.secretKeys.geminiAPIKey,
-});
-console.log('value--------------', config.secretKeys.geminiAPIKey);
 
 // Create a text generation endpoint
-router.post('/generate', async (req, res) => {
-    try {
-        const { prompt } = req.body
+router.post('/addMemory', verifyToken, addMemory);
 
-        if (!prompt) {
-            return res.status(400).json({
-                success: false,
-                message: "Prompt is required"
-            })
-        }
+router.get('/getAllEvents', verifyToken, getAllEvents)
 
-
-        const response = await ai.models.generateContent({
-            model: "gemini-2.0-flash",
-            contents: prompt});
-
-        const text = response.text;
-
-        res.status(200).json({
-            success: true,
-            response: text
-        })
-
-    } catch (error) {
-        console.error('Gemini API Error:', error)
-        res.status(500).json({
-            success: false,
-            message: "Error processing your request",
-            error: error.message
-        })
-    }
-})
-
-export default router 
+export default router;

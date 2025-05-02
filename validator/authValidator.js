@@ -24,8 +24,6 @@ const signupValidator = [
     .notEmpty().withMessage("Name is required")
     .isLength({min: 3}).withMessage("Name must be at least 3 characters long")
     .isLength({max: 20}).withMessage("Name must be less than 20 characters long"),
-
-
 ]
 
 export default signupValidator

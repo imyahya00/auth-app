@@ -4,6 +4,7 @@ import { validationResult } from "express-validator";
 import signupValidator from "../validator/authValidator.js";
 import bcrypt from 'bcrypt'
 import { generateToken } from "../utils/jwt.js";
+import crypto from "crypto";
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.post("/signup", signupValidator, async (req, res) => {
     console.log(hashedPassword)
     await newUser.save();
 
-    const token = generateToken(user._id);
+    const token = generateToken(newUser._id);
 
     res.status(201).json({
         statusCode: 200,
